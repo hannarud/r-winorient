@@ -1,12 +1,13 @@
 
 # Скрипт для подсчета очков на ЗС-2017
 
-# В этом скрипте нужно менять только competitions_date - в самой первой строке
+# В этом скрипте нужно менять только zs_directory и competitions_date - в самой первой строке
 
+zs_directory <- "~/Dropbox/Orienteering/2017/ZS/"
 competitions_date <- "170412"
 
-results <- read.csv2(file = paste0(competitions_date, "_cleaned.csv"), header = TRUE, stringsAsFactors = FALSE)
-zs_register <- read.csv2(file = "zs2017.csv", header = TRUE, stringsAsFactors = FALSE)
+results <- read.csv2(file = paste0(zs_directory, competitions_date, "_cleaned.csv"), header = TRUE, stringsAsFactors = FALSE)
+zs_register <- read.csv2(file = paste0(zs_directory, competitions_date, "_zs2017.csv"), header = TRUE, stringsAsFactors = FALSE)
 # courses <- read.csv2(file = paste0(competitions_date, "_courses.txt"), header = TRUE, stringsAsFactors = FALSE)
 
 # TODO: добавить модуль проверки правильности отметки, пока просто полагаемся на предоставленное из SI
