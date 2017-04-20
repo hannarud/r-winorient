@@ -5,8 +5,8 @@
 
 competitions_date <- "170412"
 
-results <- read.csv2(file = paste0(competitions_date, "_cleaned.csv"), header = TRUE, stringsAsFactors = FALSE)
-zs_register <- read.csv2(file = "zs2017.csv", header = TRUE, stringsAsFactors = FALSE)
+results <- read.csv2(file = paste0(competitions_date, "_cleaned.csv"), header = TRUE, stringsAsFactors = FALSE, encoding = "UTF-8")
+zs_register <- read.csv2(file = "zs2017.csv", header = TRUE, stringsAsFactors = FALSE, encoding = "UTF-8")
 # courses <- read.csv2(file = paste0(competitions_date, "_courses.txt"), header = TRUE, stringsAsFactors = FALSE)
 
 # TODO: добавить модуль проверки правильности отметки, пока просто полагаемся на предоставленное из SI
@@ -57,3 +57,6 @@ results$Score <- apply(results, 1, FUN = function(x) {
 })
 
 write.csv2(x = results, file = paste0(competitions_date, "_scores.csv"), row.names = FALSE, fileEncoding = "UTF-8")
+
+# Нужно правильными очками проинициализировать КвалКоррект
+
