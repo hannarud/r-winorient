@@ -3,16 +3,13 @@
 
 # В этом скрипте нужно менять только zs_directory и competitions_date - в самой первой строке
 
-zs_directory <- "~/Dropbox/Orienteering/2017/ZS/"
-competitions_date <- "170412"
+library(dplyr)
 
-<<<<<<< HEAD
+zs_directory <- "D:/Studies/r-winorient/"
+competitions_date <- "170426"
+
 results <- read.csv2(file = paste0(competitions_date, "_cleaned.csv"), header = TRUE, stringsAsFactors = FALSE, encoding = "UTF-8")
-zs_register <- read.csv2(file = "zs2017.csv", header = TRUE, stringsAsFactors = FALSE, encoding = "UTF-8")
-=======
-results <- read.csv2(file = paste0(zs_directory, competitions_date, "_cleaned.csv"), header = TRUE, stringsAsFactors = FALSE)
-zs_register <- read.csv2(file = paste0(zs_directory, competitions_date, "_zs2017.csv"), header = TRUE, stringsAsFactors = FALSE)
->>>>>>> origin/master
+# zs_register <- read.csv2(file = "zs2017.csv", header = TRUE, stringsAsFactors = FALSE, encoding = "UTF-8")
 # courses <- read.csv2(file = paste0(competitions_date, "_courses.txt"), header = TRUE, stringsAsFactors = FALSE)
 
 # TODO: добавить модуль проверки правильности отметки, пока просто полагаемся на предоставленное из SI
@@ -33,11 +30,15 @@ results$Speed_m_sec <- results$km/results$Time_in_sec
 
 # Ищем эталонную женскую скорость как среднюю из 5 лучших на Д1, Д2, Д3 (и не снятых!)
 women123 <- results[results$Short %in% c("Ж1", "Ж2", "Ж3") & results$Pl %in% 1:5 & results$Pl != 0, ]
+women123 <- results[results$Short %in% c("Ж1", "Ж2", "Ж3") & results$Pl != 0, ]
+women123 <- head(women123[order(women123$Speed_m_sec, decreasing = TRUE), ], 5)
 
 women_etalon_speed <- mean(women123$Speed_m_sec)
 
 # Ищем эталонную мужскую скорость как среднюю из 5 лучших на Д1, Д2, Д3
 men123 <- results[results$Short %in% c("М1", "М2", "М3") & results$Pl %in% 1:5 & results$Pl != 0, ]
+men123 <- results[results$Short %in% c("М1", "М2", "М3") & results$Pl != 0, ]
+men123 <- head(men123[order(men123$Speed_m_sec, decreasing = TRUE), ], 5)
 
 men_etalon_speed <- mean(men123$Speed_m_sec)
 
@@ -49,6 +50,9 @@ men_etalon_speed <- mean(men123$Speed_m_sec)
 
 # 3 тур
 coef <- data.frame(dist = c("velo", "Д1", "Д2", "Д3", "Д4", "Д5", "Д6", "Д7"), coef = c(0, 100, 92, 78, 57, 40, 30, 20))
+
+# 6 тур
+coef <- data.frame(dist = c("velo", "Д1", "Д2", "Д3", "Д4", "Д5", "Д6", "Д7"), coef = c(0, 100, 95, 85, 70, 70, 50, 35))
 
 results$Score <- apply(results, 1, FUN = function(x) {
   if(as.integer(x[["Pl"]]) == 0){
